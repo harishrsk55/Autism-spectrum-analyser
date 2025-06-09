@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PoseNet Keypoints Only</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+    }
+    video {
+      visibility: hidden;
+      position: absolute;
+      top: -9999px;
+    }
+    canvas {
+      display: block;
+      margin: auto;
+      background: #000;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet@2.2.1"></script>
+</head>
+<body>
+  <video id="video" width="640" height="480" autoplay playsinline muted></video>
+  <canvas id="canvas" width="640" height="480"></canvas>
+  <script src="script.js"></script>
+</body>
+</html>
