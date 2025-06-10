@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
+
+
+    <link rel="stylesheet" href="index.css">
+    <title>Home</title>
+</head>
+
+<body>
+
+    <div class="scroll0">
+        <div class="mini-nav">
+
+        </div>
+
+        <div class="main-nav">
+            <div class="logo"><img src="/static/assets/logo.svg" alt="logo" width="45px">ASA</div>
+            <div class="nav-options">
+                <ul>
+                    <li><a href="">Background</a></li>
+                    <li><a href="">About</a></li>
+                    <li><a href="">Contact</a></li>
+                    <li><a href="">Take a test</a></li>
+                </ul>
+            </div>
+            <div class="sign-up">
+                <button class="signin">Sign in</button>
+            </div>
+        </div>
+
+        <div class="intro">
+            <div class="header">
+                <p class="p1">Autism Spectrum <br> <span class="p12">Analyser</span></p>
+            </div>
+            <div class="desc">
+                Detect and support autism with confidence—our AI-powered tool integrates behavioral data, eye-tracking,
+                MRI, and questionnaires into one streamlined assessment.
+            </div>
+            <div>
+                <button class="try-now">Take a Test</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll1">
+        <div class="autism">
+            <button class="carousel-btn left" onclick="moveSlide(-1)">❮</button>
+            <button class="carousel-btn right" onclick="moveSlide(1)">❯</button>
+
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-card"
+                    style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <h2>Autism Awareness</h2>
+                    <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+                        <video autoplay muted loop playsinline
+                            style="width: 100%; max-height: 450px; border-radius: 15px; object-fit: cover;">
+                            <source src="/static/assets/aut.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+
+
+                <div class="carousel-card">
+                    <div class="sec-1">
+                        <h2>What is Autism?</h2>
+                        <ul>
+                            <li>
+                                <strong>Definition:</strong> Autism Spectrum Disorder (ASD) is a neurodevelopmental
+                                condition that affects communication, behavior, and social interaction.
+                            </li>
+                            <li>
+                                <strong>Why "Spectrum"?</strong> The term "spectrum" refers to the wide range of
+                                symptoms
+                                and abilities seen in individuals with autism.
+                            </li>
+                            <li>
+                                <strong>Common Traits:</strong> People with autism may face challenges in understanding
+                                social cues, prefer routines, and engage in repetitive actions.
+                            </li>
+                            <li>
+                                <strong>Variability:</strong> Some individuals are nonverbal, while others have advanced
+                                verbal and cognitive skills.
+                            </li>
+                            <li>
+                                <strong>Perspective:</strong> Autism is not a disease — it's a different way of
+                                experiencing
+                                the world, often accompanied by unique strengths.
+                            </li>
+                            <li>
+                                <strong>Importance of Support:</strong> Early intervention and personalized support can
+                                help
+                                individuals with ASD lead fulfilling lives.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <img src="/static/assets/gooddoc.jpg" alt="" id="ccard-1-img" style="border-radius: 20px;">
+                </div>
+                <div class="carousel-card">
+                    <div class="sec-1">
+                        <h2>Early Signs of Autism</h2>
+                        <ul>
+                            <li>
+                                <strong>Delayed Speech:</strong> A child may not babble, speak, or develop language at
+                                the expected age.
+                            </li>
+                            <li>
+                                <strong>Limited Eye Contact:</strong> Reduced or inconsistent eye contact during
+                                interactions.
+                            </li>
+                            <li>
+                                <strong>Repetitive Behaviors:</strong> Engaging in repeated actions such as
+                                hand-flapping, rocking, or lining up toys.
+                            </li>
+                            <li>
+                                <strong>Lack of Social Interest:</strong> May not respond to their name, show interest
+                                in others, or engage in pretend play.
+                            </li>
+                            <li>
+                                <strong>Sensory Sensitivities:</strong> May be unusually sensitive or unresponsive to
+                                sounds, lights, textures, or touch.
+                            </li>
+                            <li>
+                                <strong>Resistance to Change:</strong> Prefers routines and may get upset by small
+                                changes in schedule or environment.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <img src="/static/assets/woo.webp" alt="Early signs of autism" id="ccard-1-img" style="border-radius: 20px;">
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <script>
+        window.addEventListener("scroll", () => {
+            const scrollY = window.scrollY;
+            const threshold = window.innerHeight *0.7;
+
+            if (scrollY > threshold) {
+                document.body.style.backgroundColor = "white"; // after 100vh
+            } else {
+                document.body.style.backgroundColor = "#6CD6DD"; // default
+            }
+        });
+
+        let currentSlide = 0;
+
+        function moveSlide(direction) {
+            const track = document.getElementById("carouselTrack");
+            const totalSlides = track.children.length;
+
+            currentSlide += direction;
+
+            if (currentSlide < 0) currentSlide = totalSlides - 1;
+            if (currentSlide >= totalSlides) currentSlide = 0;
+
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+    </script>
+
+
+</body>
+
+</html>
