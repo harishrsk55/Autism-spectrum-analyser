@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pose Detection JS</title>
+  <style>
+    canvas { display: block; margin: 0 auto; background: #000; }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const ws = new WebSocket(`ws://${location.host}`);
+    ws.binaryType = 'arraybuffer';
+
+    ws.onmessage = ({ data }) => {
+      const { jpg, boxes, kpts } = JSON.parse(data);
+      const img = new Image();
+      img.src = 'data:image/jpeg;base64,' + jpg;
+      img.onload = () => {
+        // match canvas to image size
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // draw blank background
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // draw boxes
+        ctx.strokeStyle = '#0f0';
+        ctx.lineWidth = 2;
+        boxes.forEach(([x1, y1, x2, y2]) => {
+          ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+        });
+
+        // draw keypoints
+        ctx.fillStyle = '#f00';
+        kpts.forEach(([x, y]) => {
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      };
+    };
+  </script>
+</body>
+</html>
