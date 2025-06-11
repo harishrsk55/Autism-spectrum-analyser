@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test_details</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="test_details.css">
+  <link rel="icon" href="/app/static/assets/logo.svg">
+</head>
+
+<body>
+  <div class="scroll0">
+
+    <div class="main-nav">
+      <div class="logo"><img src="/app/static/assets/logo.svg" alt="logo" width="45px">ASA</div>
+      <div class="nav-options">
+        <ul>
+          <li><a href="">Home</a></li>
+          <li><a href="">Background</a></li>
+          <li><a href="">About</a></li>
+          <li><a href="">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="test-card" >
+      <h2>ASA Test Modules</h2>
+      <p class="intro">
+        The Autism Spectrum Analyzer (ASA) platform features four distinct AI-powered assessments, each targeting a
+        unique diagnostic modality for comprehensive screening.
+      </p>
+
+      <div class="module" id="behavior" onclick="window.location.href='#1'">
+        <h3>🎭 Behavioral Observation</h3>
+        <p>Monitors gestures, micro-expressions, and body language via deep spatiotemporal learning from short video
+          clips.</p>
+      </div>
+
+      <div class="module" onclick="window.location.href='#2'">
+        <h3>👁️ Eye Gaze Analysis</h3>
+        <p>Utilizes webcam-based eye-tracking to analyze visual attention patterns using Convolutional and Recurrent
+          Neural Networks.</p>
+      </div>
+
+      <div class="module" onclick="window.location.href='#3'">
+        <h3>📝 Questionnaire Interpretation</h3>
+        <p>Applies natural language processing on clinically validated self-assessment surveys like M-CHAT, SRS, and AQ.
+        </p>
+      </div>
+
+      <div class="module" onclick="window.location.href='#4'">
+        <h3>🧬 MRI Report Insight</h3>
+        <p>Optional upload of MRI summaries enables transformer-based analysis of neural patterns linked to ASD.</p>
+      </div>
+    </div>
+
+    <div class="modality-container" id="1">
+      <div class="text-content">
+        <h1>Spot the signs that matter with<span>Behavioral Observation</span></h1>
+        <p>
+          This smart model watches for repetitive movements like arm flapping or head banging actions that can say a lot
+          about how someone feels or thinks. It helps catch early signs often linked to conditions like autism.
+        </p>
+        <button>Take the Test</button>
+      </div>
+      <div class="image-side">
+        <img src="/app/static/assets/behavior.jpg" alt="MRI Image">
+      </div>
+    </div>
+
+    <div class="modality-container" id="2">
+      <div class="image-side">
+        <img src="/app/static/assets/eyegaze.avif" alt="MRI Image">
+      </div>
+      <div class="text-content">
+        <h1>Discover patterns of attention with<span>Eye Gaze Tracking</span></h1>
+        <p>
+          Eye gaze tracking monitors where and how long a person looks at visual stimuli, offering insights into
+          attention, cognition, and neurological conditions—non-invasively and in real-time.
+        </p>
+        <button>Take the Test</button>
+      </div>
+    </div>
+
+    <div class="modality-container" id="3">
+      <div class="text-content">
+        <h1>Answer a few questions, get real insights with<span>Questionnaire Interpretation</span></h1>
+        <p>
+          This tool uses simple, behavior-based questions from the trusted ISAA scale to understand your patterns and
+          give a clear score—making early autism screening easy and approachable.
+        </p>
+        <button>Take the Test</button>
+      </div>
+      <div class="image-side">
+        <img src="/app/static/assets/question.jpg" alt="MRI Image">
+      </div>
+    </div>
+
+    <div class="modality-container" id="4">
+      <div class="image-side">
+        <img src="/app/static/assets/mri-removebg-preview.png" alt="MRI Image" id="mri">
+      </div>
+      <div class="text-content">
+        <h1>Explore your brain with <span>MRI</span></h1>
+        <p>
+          Magnetic Resonance Imaging (MRI) provides detailed images of the brain's anatomy, helping detect abnormalities
+          non-invasively.
+        </p>
+        <button>Take the Test</button>
+      </div>
+    </div>
+
+  <script>
+  const scroll2 = document.querySelector('.test-card');
+  const mnav = document.querySelector('.main-nav');
+
+  if (scroll2 && mnav) {
+    const originalBg = getComputedStyle(mnav).backgroundColor;
+    const originalColor = getComputedStyle(mnav).color;
+
+    window.addEventListener("scroll", () => {
+      const scrollY = window.scrollY;
+      const threshold1 = window.innerHeight * 0.8;
+      const scroll2Top = scroll2.offsetTop;
+      const scroll2Bottom = scroll2Top + scroll2.offsetHeight;
+
+      if (scrollY > threshold1) {
+        document.body.style.backgroundColor = "white";
+        mnav.style.backgroundColor = "white";
+        mnav.style.color = "#223C4E";
+      } else {
+        document.body.style.backgroundColor = "#6CD6DD";
+        mnav.style.backgroundColor = "#6cd6dd";
+        mnav.style.color = originalColor;
+      }
+    });
+  }
+</script>
+
+    </script>
+
+</body>
+
+</html>
