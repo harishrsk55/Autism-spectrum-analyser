@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
         rel="stylesheet">
 
-
+    <link rel="icon" href="/static/assets/logo.svg">
     <link rel="stylesheet" href="index.css">
     <title>Home</title>
 </head>
@@ -23,13 +23,18 @@
 
         </div>
 
+<<<<<<< Updated upstream
         <div class="main-nav">
             <div class="logo"><img src="/app/static/assets/logo.svg" alt="logo" width="45px">ASA</div>
+=======
+        <div class="main-nav" id="main-nav">
+            <div class="logo"><img src="/static/assets/logo.svg" alt="logo" width="45px">ASA</div>
+>>>>>>> Stashed changes
             <div class="nav-options">
                 <ul>
-                    <li><a href="">Background</a></li>
-                    <li><a href="">About</a></li>
-                    <li><a href="">Contact</a></li>
+                    <li><a href="#background">Background</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="mailto:anuvindmp292003@gmail.com">Contact</a></li>
                     <li><a href="">Take a test</a></li>
                 </ul>
             </div>
@@ -52,7 +57,7 @@
         </div>
     </div>
 
-    <div class="scroll1">
+    <div class="scroll1" id="background">
         <div class="autism">
             <button class="carousel-btn left" onclick="moveSlide(-1)">❮</button>
             <button class="carousel-btn right" onclick="moveSlide(1)">❯</button>
@@ -138,14 +143,52 @@
                         </ul>
                     </div>
 
-                    <img src="/static/assets/woo.webp" alt="Early signs of autism" id="ccard-1-img" style="border-radius: 20px;">
+                    <img src="/static/assets/woo.webp" alt="Early signs of autism" id="ccard-1-img"
+                        style="border-radius: 20px;">
                 </div>
 
 
             </div>
         </div>
-
     </div>
+
+    <div class="scroll2">
+        <div class="empty"></div>
+        <div class="text-section">
+            <h1>Skip the Wait <br> Diagnose <span class="highlight">with</span> <span
+                    class="highlight">Confidence.</span></h1>
+            <p>ASA provides an easy, tech-driven path to early autism diagnosis—faster, simpler, and built for
+                everyone...</p>
+            <button class="try-now" style="color: black;">Try Now</button>
+        </div>
+        <div class="image-section">
+            <img src="/static/assets/aware.png" alt="" class="aware">
+        </div>
+    </div>
+
+    <section class="main-section" id="about">
+        <h1 class="section-heading">About the Creators</h1>
+        <div class="card-container">
+          <div class="card" onclick="window.location.href='https:github.com/anuvindmp'">
+                <img src="assets/anuv.png" alt="Engagement Survey">
+                <span class="tag lightblue">Amrita Vishwa Vidyapeetham, Amritapuri</span>
+                <h2 class="card-title">Anuvind M P</h2>
+            </div>
+            <div class="card" onclick="window.location.href='https:github.com/harishrsk55'">
+                <img src="/static/assets/harish.JPG" alt="Workplace Tragedies">
+                <span class="tag peach">Amrita Vishwa Vidyapeetham, Amritapuri</span>
+                <h2 class="card-title">R S Harish Kumar</h2>
+            </div>
+            <div class="card" onclick="window.location.href='https:github.com/Giriiri-g;'">
+                <img src="/static/assets/giri.jpeg" alt="Award Finalist">
+                <span class="tag tan">Amrita Vishwa Vidyapeetham, Amritapuri</span>
+                <h2 class="card-title">Girish S</h2>
+            </div>
+        </div>
+    </section>
+    <div class="footer">Made with &hearts;</div>
+
+    
 
 
 
@@ -153,16 +196,31 @@
 
 
     <script>
+        const scroll2 = document.querySelector('.scroll2');
+        const mnav = document.getElementById('main-nav');
+
+        const originalTop = getComputedStyle(mnav).top;
+
         window.addEventListener("scroll", () => {
             const scrollY = window.scrollY;
-            const threshold = window.innerHeight *0.7;
+            const threshold1 = window.innerHeight * 0.7;
+            const scroll2Top = scroll2.offsetTop;
+            const scroll2Bottom = scroll2Top + scroll2.offsetHeight;
 
-            if (scrollY > threshold) {
-                document.body.style.backgroundColor = "white"; // after 100vh
+            if (scrollY > threshold1 && scrollY < scroll2Bottom) {
+                document.body.style.backgroundColor = "white";
+                mnav.style.backgroundColor = "white";
+                mnav.style.color = "#223C4E";
+                mnav.style.top = "0";
             } else {
-                document.body.style.backgroundColor = "#6CD6DD"; // default
+                document.body.style.backgroundColor = "#6CD6DD";
+                mnav.style.backgroundColor = "#6CD6DD";
+                mnav.style.color = "white";
+                mnav.style.top = originalTop;
             }
         });
+
+
 
         let currentSlide = 0;
 

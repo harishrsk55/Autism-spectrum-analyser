@@ -9,13 +9,14 @@ body{
     transition: background-color 0.5s ease;
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     gap: 8px;
     width: 100vw;
 }  
 
 html, body {
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 
@@ -31,6 +32,7 @@ html, body {
     height: 4.5vh;
     color: white;
     background-color: #223C4E;
+    z-index: 2;
 }
 
 
@@ -45,7 +47,9 @@ html, body {
     grid-template-rows: repeat(1, 1fr);
     gap: 8px;
     box-shadow: 5px 2px 2px #223c4e2d;
+    background-color: #6CD6DD;
 }
+
     
 .logo {
     grid-column: span 2 / span 2;
@@ -270,7 +274,6 @@ html, body {
   height: 100%;
   display: flex;
   justify-content: center;
-
 }
 
 
@@ -281,6 +284,7 @@ html, body {
   border-radius: 30px;
   overflow: hidden;
   position: relative;
+  z-index: 1;
 }
 
 .carousel-track {
@@ -336,4 +340,159 @@ html, body {
 
 .carousel-btn.right {
   right: 10px;
+}
+
+.scroll2 {
+  height: 80%;
+  width: 74%;
+  background-color: #D5F4F5; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 10vw;
+  margin-top: 50px;
+  border-radius: 50px;
+  padding: 40px 60px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+.text-section {
+  width: 45%;
+  color: #1f1f1f;
+}
+
+.text-section h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.text-section .highlight {
+  color: #00aab5;
+}
+
+.text-section p {
+  margin: 20px 0;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.text-section button {
+  padding: 12px 24px;
+  border: 1px solid #1f1f1f;
+  background: transparent;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.text-section button:hover {
+  background: #00aab5;
+  color: white;
+}
+
+.image-section {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aware{
+  width: 100%;
+  height: 100%;
+  border-radius: 50px 50px 0 0 ;
+}
+
+
+
+.main-section {
+    padding: 50px 5%;
+}
+
+.section-heading {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 50px;
+    color: #1f2d3d;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.card {
+    background-color: #eaf1f2;
+    border-radius: 20px;
+    padding: 20px;
+    width: 30%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.lightblue {
+    background-color: #d7eff4;
+    color: #337c87;
+}
+
+.peach {
+    background-color: #fbe0d9;
+    color: #9a5d51;
+}
+
+.tan {
+    background-color: #f4e8d7;
+    color: #5c4a2f;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2d3d;
+    line-height: 1.4;
+}
+
+.footer{
+  height: 40px;
+  width: 100vw;
+  background-color: #223C4E;
+  text-align: center;
+  color: white;
+}
+
+.main-nav{
+  z-index: 2;
+}
+
+.card img{
+  height: 400px;
+  width: auto;
 }
