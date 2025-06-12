@@ -77,7 +77,7 @@ body {
   border-radius: 16px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   padding: 30px;
-  width: 500px; /* Bigger cards */
+  width: 700px; /* Bigger cards */
   transition: transform 0.3s;
   flex-shrink: 0;
 }
