@@ -145,6 +145,7 @@ nextBtn.addEventListener("click", () => {
   .then(data => {
     alert("Thank you! Your responses have been submitted.");
     console.log("Server response:", data);
+    window.location.href="test_details.html"
   })
   .catch(error => {
     console.error("Submission failed:", error);

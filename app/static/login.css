@@ -1,0 +1,182 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Poppins';
+  }
+
+body{
+    background-image: url(assets/autt.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;  
+}
+
+  .poppins-light {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  width: 80px;
+  height: auto;
+  z-index: -1;
+  object-fit: contain;
+  transform: scale(1.8);
+  background-color: black; /* fallback if video aspect ratio leaves gaps */
+}
+
+  .login-wrapper{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+  }
+
+  /* Login container */
+  .login-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 60vh;
+    transform: translate(-50%, -50%);
+    background: #313f3dbb;
+    border: 1px solid #2e3131;
+    backdrop-filter: blur(px);
+    border-radius: 25px;
+    padding: 50px 40px;
+    width: 25vw;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+
+  .login-title {
+    text-align: center;
+    display: block;
+    margin-bottom: 30px;
+    font-size: 3.5rem;
+    font-family: 'Poppins';
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    color: #d5f4f5;
+    
+  }
+
+  /* .login-container input[type="text"],
+  .login-container input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-sizing: border-box;
+  } */
+
+  /* .login-container button {
+    width: 100%;
+
+  } */
+
+  .login-container button:hover {
+    background-color: #d5f4f5;
+  }
+
+  .login-container .signup-link {
+    display: block;
+    margin-top: 25px;
+    text-align: center;
+    font-size: 15px;
+    color: white;
+  }
+
+  .login-container .signup-link a {
+    color: #d5f4f5;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .login-container .signup-link a:hover {
+    text-decoration: underline;
+  }
+
+  .field{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.2rem;
+  }
+
+.field-header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1%;
+}
+
+  .field-header p{
+    color: #d5f4f5;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0px 0 0.2rem 0;
+  }
+
+
+.error-field{
+    display: none;
+}
+
+.field-control{
+    margin: 0;
+    border-radius: 3px !important;
+    background-color: transparent;
+    border-bottom: 1px solid #919191a4;
+    border-top: 0px;
+    border-left: 0;
+    border-right: 0;
+    outline: 0;
+    font-size: 16px;
+    padding: 2%;
+    margin-bottom: 10%;
+    transition: all 0.3s ease-in-out;
+    color: white;
+}
+
+.field-control:focus{
+    background-color: #42424227;
+    border-bottom: 1px solid #d5f4f5;
+    color: white;
+}
+
+.login-btn-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#login-btn{
+    width: 25%;
+    padding: 14px;
+    font-family: "Poppins";
+    background-color: #d5f4f5;
+    border: none;
+    border-radius: 12px;
+    color: #2e3131;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0;
+}

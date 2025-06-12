@@ -19,7 +19,11 @@ html, body {
   scroll-behavior: smooth;
 }
 
-
+#hi{
+  color: #223C4E;
+  font-weight: 700;
+  font-size: 1rem;
+}
 
 .scroll0{
     width: 100%;

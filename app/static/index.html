@@ -30,11 +30,11 @@
                     <li><a href="#background">Background</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="mailto:anuvindmp292003@gmail.com">Contact</a></li>
-                    <li><a href="test_details.html">Take a test</a></li>
+                    <li><a href="login.html" id="hehe">Take a test</a></li>
                 </ul>
             </div>
-            <div class="sign-up">
-                <button class="signin">Sign in</button>
+            <div class="sign-up" id="hi">
+                <button class="signin" onclick="window.location.href='login.html'" id="sign">Sign in</button>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
                 MRI, and questionnaires into one streamlined assessment.
             </div>
             <div>
-                <button class="try-now" onclick="window.location.href='test_details.html'">Take a Test</button>
+                <button class="try-now" onclick="window.location.href='login.html'" id="take">Take a Test</button>
             </div>
         </div>
     </div>
@@ -154,7 +154,8 @@
                     class="highlight">Confidence.</span></h1>
             <p>ASA provides an easy, tech-driven path to early autism diagnosis—faster, simpler, and built for
                 everyone...</p>
-            <button class="try-now" style="color: black;"onclick="window.location.href='test_details.html'">Try Now</button>
+            <button class="try-now" style="color: black;" onclick="window.location.href='login.html'" id="take">Try
+                Now</button>
         </div>
         <div class="image-section">
             <img src="assets/aware.png" alt="" class="aware">
@@ -164,7 +165,7 @@
     <section class="main-section" id="about">
         <h1 class="section-heading">About the Creators</h1>
         <div class="card-container">
-          <div class="card" onclick="window.location.href='https:github.com/anuvindmp'">
+            <div class="card" onclick="window.location.href='https:github.com/anuvindmp'">
                 <img src="assets/anuv.png" alt="Engagement Survey">
                 <span class="tag lightblue">Amrita Vishwa Vidyapeetham, Amritapuri</span>
                 <h2 class="card-title">Anuvind M P</h2>
@@ -183,7 +184,7 @@
     </section>
     <div class="footer">Made with &hearts;</div>
 
-    
+
 
 
 
@@ -230,6 +231,25 @@
 
             track.style.transform = `translateX(-${currentSlide * 100}%)`;
         }
+
+        window.onload = () => {
+            if (sessionStorage.getItem("loggedIn") === "true") {
+                const signBtn = document.getElementById('sign');
+                if (signBtn) {
+                    signBtn.style.display = 'none';
+                    document.getElementById('hi').innerHTML =  "Hi "+ sessionStorage.getItem("user") + "!";
+                }
+            }
+        };
+        if (sessionStorage.getItem("loggedIn") === "true") {
+  document.getElementById('take').onclick = function () {
+    window.location.href = 'test_details.html';
+      document.getElementById('hehe').onclick = function () {
+    window.location.href = 'test_details.html';}
+  };
+}
+
+
     </script>
 
 
