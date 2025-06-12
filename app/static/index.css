@@ -500,3 +500,7 @@ html, body {
   height: 400px;
   width: auto;
 }
+
+#autherss{
+  transform: scale(1);
+}
