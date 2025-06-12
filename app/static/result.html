@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ASA Results Dashboard</title>
+  <link rel="stylesheet" href="result.css">
+</head>
+<body>
+
+  <div class="main-nav">
+    <div class="logo">
+      <img src="assets/logo.svg" alt="logo" width="45px">ASA
+    </div>
+    <div class="nav-options">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#background">Background</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="mailto:anuvindmp292003@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <h1 class="dashboard-title" id="dash"></h1>
+
+  <div class="card-container">
+    <!-- Eye Tracking Card -->
+    <div class="result-card">
+      <h2>🧿 Eye Tracking</h2>
+      <p><strong>Fixation on Eyes:</strong> 30%</p>
+      <p><strong>Fixation on Mouth:</strong> 10%</p>
+      <p><strong>Non-social Focus:</strong> 60%</p>
+      <p><strong>Average Fixation Duration:</strong> 300ms</p>
+      <p><strong>Interpretation:</strong> Low attention to eyes; potential social attention deficit.</p>
+    </div>
+
+    <!-- Behavioral Card -->
+    <div class="result-card">
+      <h2>🧠 Behavioral Analysis</h2>
+      <p><strong>Facial Expression:</strong> Flat affect</p>
+      <p><strong>Gesture Detection:</strong> Minimal hand movement</p>
+      <p><strong>Speech Delay:</strong> 2.5s average response lag</p>
+      <p><strong>Emotional Variance:</strong> Low</p>
+      <p><strong>Interpretation:</strong> Reduced expressiveness noted during interaction.</p>
+    </div>
+
+    <!-- Questionnaire Card -->
+    <div class="result-card">
+      <h2>📝 Questionnaire</h2>
+      <p><strong>AQ Score:</strong> 32/50</p>
+      <p><strong>Risk Level:</strong> High</p>
+      <p><strong>Social Score:</strong> 8/10</p>
+      <p><strong>Communication Score:</strong> 9/10</p>
+      <p><strong>Interpretation:</strong> Above-threshold score across domains.</p> 
+    </div>
+  </div>
+
+  <script>
+document.getElementById('dash').innerHTML = sessionStorage.getItem("user") + "'s Test Results Dashboard";
+  </script>
+
+</body>
+</html>
