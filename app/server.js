@@ -2,6 +2,10 @@ const express = require('express')
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const app = express()
+const fs = require('fs');
+const path = require('path');
+const bodyParser = require("body-parser");
+const { exec } = require("child_process");
 
 // Middleware
 app.use(express.json());
@@ -48,6 +52,41 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Login error' });
     }
 });
+
+app.use(bodyParser.json({ limit: "10mb" })); // to handle large base64 images
+
+app.post("/upload-heatmap", (req, res) => {
+  const base64Data = req.body.image;
+  if (!base64Data) return res.status(400).send("No image data received");
+
+  const base64Image = base64Data.split(";base64,").pop();
+  const filename = `heatmap_${Date.now()}.png`;
+  const filePath = path.join(__dirname, filename);
+
+  fs.writeFile(filePath, base64Image, { encoding: "base64" }, (err) => {
+    if (err) {
+      console.error("Error saving image:", err);
+      return res.status(500).send("Failed to save image");
+    }
+
+    // 🔥 Run prediction
+    exec(`"C:/Users/Harish Kumar/anaconda3/python.exe" predict_asd.py ${filePath}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error("Prediction error:", error);
+        return res.status(500).send("Model prediction failed");
+      }
+
+      const prediction = stdout.trim();
+      console.log(`✅ Prediction result: ${prediction}`);
+      res.send(`Prediction: ${prediction}`);
+    });
+  });
+});
+
+app.get('/testie',(req,res)=>{
+    res.sendFile('D:/uni/sem6/Autism-spectrum-analyser/app/static/testie.html')
+})
+
 
 app.listen(5000,()=>{
     console.log('server is running on port 5000')

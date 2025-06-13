@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gaze Tracking with Auto Heatmap Upload</title>
+  <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      margin: 0;
+    }
+
+    #mainImage {
+      max-width: 80%;
+      max-height: 80%;
+      display: none;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-weight: bold;
+      color: lightgreen;
+    }
+
+    canvas {
+      display: none;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <img id="mainImage" src="assets/22.png" alt="Test Image">
+  <canvas id="heatmapCanvas" width="1280" height="720"></canvas>
+
+  <p id="status">Status: Click to start calibration</p>
+  <button onclick="startCalibration()">Start Gaze Calibration</button>
+
+  <script>
+    let gazePoints = [];
+    let tracking = false;
+    let calibrated = false;
+    let started = false;
+
+    GazeCloudAPI.OnResult = function (GazeData) {
+      // Wait until calibration is complete (state === 0 means tracking is active)
+      if (!calibrated && GazeData.state === 0) {
+        calibrated = true;
+        document.getElementById("status").textContent = "✅ Calibration done. Starting test...";
+
+        setTimeout(() => {
+          showImageAndTrack();
+        }, 1000); // small delay after calibration
+      }
+
+      // Store gaze data only if actively tracking
+      if (tracking && GazeData.state === 0) {
+        gazePoints.push({ x: GazeData.docX, y: GazeData.docY });
+      }
+    };
+
+    function startCalibration() {
+      document.getElementById("status").textContent = "🔴 Begin calibration using red markers...";
+      GazeCloudAPI.StartEyeTracking();
+      calibrated = false;
+      gazePoints = [];
+    }
+
+    function showImageAndTrack() {
+      const image = document.getElementById("mainImage");
+      image.style.display = "block";
+      gazePoints = [];
+      tracking = true;
+
+      setTimeout(() => {
+        tracking = false;
+        image.style.display = "none";
+        GazeCloudAPI.StopEyeTracking();
+        generateAndSendHeatmap();
+      }, 10000); // Show image for 5 seconds
+    }
+
+    function generateAndSendHeatmap() {
+      const canvas = document.getElementById("heatmapCanvas");
+      const ctx = canvas.getContext("2d");
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const radius = 30;
+
+      for (const point of gazePoints) {
+        const grd = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, radius);
+        grd.addColorStop(0, "rgba(255,255,255,0.4)");
+        grd.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      const heatmapData = canvas.toDataURL("image/png");
+
+      fetch("/upload-heatmap", {
+        method: "POST",
+        body: JSON.stringify({ image: heatmapData }),
+        headers: { "Content-Type": "application/json" }
+      }).then(res => {
+        document.getElementById("status").textContent = "✅ Heatmap sent to server!";
+      }).catch(err => {
+        document.getElementById("status").textContent = "❌ Failed to send heatmap.";
+        console.error("Upload error:", err);
+      });
+    }
+  </script>
+</body>
+</html>

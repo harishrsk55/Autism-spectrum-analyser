@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Visible B&W Gaze Heatmap</title>
+  <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 16px;
+    }
+
+    #heatmapCanvas {
+      border: 2px solid #000;
+      margin-top: 15px;
+      display: block;
+      background: #000; /* black background for B&W contrast */
+    }
+
+    #status {
+      margin-top: 10px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Gaze Tracking & B&W Heatmap</h2>
+
+  <button onclick="startTracking()">Start Tracking</button>
+  <button onclick="stopTracking()">Stop Tracking</button>
+  <button onclick="generateHeatmap()">Generate Heatmap</button>
+  <button onclick="downloadHeatmap()">Download Heatmap</button>
+
+  <p id="status">Status: Not tracking</p>
+
+  <!-- 👁️‍🗨️ Visible Canvas -->
+  <canvas id="heatmapCanvas" width="1280" height="720"></canvas>
+
+  <script>
+    let gazePoints = [];
+    let tracking = false;
+
+    GazeCloudAPI.OnResult = function (GazeData) {
+      if (GazeData.state === 0 && tracking) {
+        gazePoints.push({ x: GazeData.docX, y: GazeData.docY });
+        console.log("Gaze:", GazeData.docX, GazeData.docY);
+      }
+    };
+
+    function startTracking() {
+      tracking = true;
+      gazePoints = []; // clear old data
+      GazeCloudAPI.StartEyeTracking();
+      document.getElementById("status").textContent = "Status: Tracking...";
+    }
+
+    function stopTracking() {
+      tracking = false;
+      GazeCloudAPI.StopEyeTracking();
+      document.getElementById("status").textContent = "Status: Tracking stopped.";
+    }
+
+    function generateHeatmap() {
+      if (gazePoints.length === 0) {
+        alert("No gaze points recorded.");
+        return;
+      }
+
+      const canvas = document.getElementById("heatmapCanvas");
+      const ctx = canvas.getContext("2d");
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const radius = 30;
+
+      for (const point of gazePoints) {
+        const grd = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, radius);
+        grd.addColorStop(0, "rgba(255,255,255,0.4)");
+        grd.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      document.getElementById("status").textContent = "✅ Heatmap generated!";
+    }
+
+    function downloadHeatmap() {
+      const canvas = document.getElementById("heatmapCanvas");
+      const link = document.createElement("a");
+      link.download = "bw_heatmap.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  </script>
+
+</body>
+</html>
