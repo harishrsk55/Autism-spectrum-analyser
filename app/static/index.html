@@ -231,17 +231,18 @@
                 const signBtn = document.getElementById('sign');
                 if (signBtn) {
                     signBtn.style.display = 'none';
-                    document.getElementById('hi').innerHTML =  "Hi "+ sessionStorage.getItem("user") + "!";
+                    document.getElementById('hi').innerHTML = "Hi " + sessionStorage.getItem("user") + "!";
                 }
             }
         };
         if (sessionStorage.getItem("loggedIn") === "true") {
-  document.getElementById('take').onclick = function () {
-    window.location.href = 'test_details.html';
-      document.getElementById('hehe').onclick = function () {
-    window.location.href = 'test_details.html';}
-  };
-}
+            document.getElementById('take').onclick = function () {
+                window.location.href = 'test_details.html';
+                document.getElementById('hehe').onclick = function () {
+                    window.location.href = 'test_details.html';
+                }
+            };
+        }
 
 
     </script>
