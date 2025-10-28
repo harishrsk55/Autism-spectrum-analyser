@@ -27,7 +27,7 @@ html, body {
 
 .scroll0{
     width: 100%;
-    height: 80vh;
+    height: 90%;
 }
 
 .mini-nav{
@@ -168,7 +168,7 @@ html, body {
 
 .intro{
     position: absolute;
-    top: 12vh;
+    top: 5vh;
     width: 100%;
     height: 70%;
     display: flex;
@@ -275,15 +275,16 @@ html, body {
 
 .scroll1{
   width: 100%;
-  height: 100%;
+  height: auto;
   display: flex;
   justify-content: center;
+  margin-top: -15vh;
 }
 
 
 .autism {
   width: 70%;
-  height: 100%;
+  height: 80%;
   background-color: #e6eaeb;
   border-radius: 30px;
   overflow: hidden;
@@ -300,8 +301,8 @@ html, body {
 .carousel-card {
   display: flex;
   min-width: 100%;
-  height: 100%;
-  padding: 100px;
+  height: 70%;
+  padding: 70px;
   color:#223C4E;
   gap: 2rem;
   box-sizing: border-box;
@@ -314,7 +315,7 @@ html, body {
 
 .carousel-card ul{
   line-height: 30px;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .carousel-card h2 {
@@ -347,7 +348,7 @@ html, body {
 }
 
 .scroll2 {
-  height: 80%;
+  height: 70%;
   width: 74%;
   background-color: #D5F4F5; 
   display: flex;
@@ -428,14 +429,14 @@ html, body {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 3px;
 }
 
 .card {
     background-color: #eaf1f2;
     border-radius: 20px;
     padding: 20px;
-    width: 30%;
+    width: 28%;
     box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
@@ -490,6 +491,7 @@ html, body {
   background-color: #223C4E;
   text-align: center;
   color: white;
+  margin-bottom: -35px;
 }
 
 .main-nav{
@@ -501,6 +503,4 @@ html, body {
   width: auto;
 }
 
-#autherss{
-  transform: scale(1);
-}
+

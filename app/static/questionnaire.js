@@ -123,12 +123,13 @@ nextBtn.addEventListener("click", () => {
   }
   else {
   const totalScore = selectedAnswers.reduce((sum, answer) => sum + answer.value, 0);
-  
+  sessionStorage.setItem("score", totalScore);
   const payload = {
     totalScore: totalScore
   };
   // Debug log or confirmation
   console.log("Total Score:", totalScore);
+  
 
   // Send to server (POST request)
   fetch('/submit', {

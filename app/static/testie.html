@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts..com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
   <title>Gaze Tracking with Auto Heatmap Upload</title>
   <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
   <style>
@@ -74,7 +80,7 @@
 </head>
 <body>
 
-  <img id="mainImage" src="assets/22.png" alt="Test Image">
+  <img id="mainImage" src="assets/5.png" alt="Test Image">
   <canvas id="heatmapCanvas" width="1280" height="720"></canvas>
 
   <p id="status">Status: Click to start calibration</p>
@@ -121,7 +127,7 @@
         image.style.display = "none";
         GazeCloudAPI.StopEyeTracking();
         generateAndSendHeatmap();
-      }, 10000); // Show image for 5 seconds
+      }, 5000); // Show image for 5 seconds
     }
 
     function generateAndSendHeatmap() {
@@ -156,6 +162,8 @@
         document.getElementById("status").textContent = "❌ Failed to send heatmap.";
         console.error("Upload error:", err);
       });
+
+      window.location.href = "test_details.html";
     }
   </script>
 </body>

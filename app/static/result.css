@@ -1,5 +1,6 @@
 body {
     font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
   margin: 0;
   padding: 0;
   background-color: #6CD6DD;
@@ -77,7 +78,7 @@ body {
   border-radius: 16px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   padding: 30px;
-  width: 700px; /* Bigger cards */
+  width: 600px; /* Bigger cards */
   transition: transform 0.3s;
   flex-shrink: 0;
 }

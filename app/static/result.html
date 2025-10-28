@@ -1,53 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>ASA Results Dashboard</title>
-  <link rel="stylesheet" href="result.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>ASA Results Dashboard</title>
 
-  <div class="main-nav">
-    <div class="logo">
-      <img src="assets/logo.svg" alt="logo" width="45px">ASA
-    </div>
-    <div class="nav-options">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="index.html#background">Background</a></li>
-        <li><a href="index.html#about">About</a></li>
-        <li><a href="mailto:anuvindmp292003@gmail.com">Contact</a></li>
-      </ul>
-    </div>
-  </div>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts..com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
 
-  <h1 class="dashboard-title" id="dash"></h1>
-
-  <div class="card-container">
-    <!-- Eye Tracking Card -->
-    <div class="result-card">
-      <h2>🧿 Eye Tracking</h2>
-      <p><strong>Fixation on Eyes:</strong> 30%</p>
-      <p><strong>Fixation on Mouth:</strong> 10%</p>
-      <p><strong>Non-social Focus:</strong> 60%</p>
-      <p><strong>Average Fixation Duration:</strong> 300ms</p>
-      <p><strong>Interpretation:</strong> Low attention to eyes; potential social attention deficit.</p>
+    <link rel="stylesheet" href="result.css" />
+  </head>
+  <body>
+    <div class="main-nav">
+      <div class="logo">
+        <img src="assets/logo.svg" alt="logo" width="45px" />ASA
+      </div>
+      <div class="nav-options">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#background">Background</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="mailto:anuvindmp292003@gmail.com">Contact</a></li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Questionnaire Card -->
-    <div class="result-card">
-      <h2>📝 Questionnaire</h2>
-      <p><strong>AQ Score:</strong> 32/50</p>
-      <p><strong>Risk Level:</strong> High</p>
-      <p><strong>Social Score:</strong> 8/10</p>
-      <p><strong>Communication Score:</strong> 9/10</p>
-      <p><strong>Interpretation:</strong> Above-threshold score across domains.</p> 
+    <h1 class="dashboard-title" id="dash"></h1>
+
+    <div class="card-container">
+      <!-- Eye Tracking Card -->
+      <div class="result-card">
+        <h2>🧿 Eye Tracking</h2>
+        <p>Your Heatmap : </p>
+        <img src="" alt="heatmap" id="heat" width="100%" height="auto" style="border-radius: 30px;"/>
+        <p><strong>Interpretation:</strong> <span id="pred"></span></p>
+      </div>
+
+      <!-- Questionnaire Card -->
+      <div class="result-card">
+        <h2>📝 Questionnaire</h2>
+        <p><strong>AQ Score:</strong> <span id="AQ"></span></p>
+        <p><strong>Degree of Autism:</strong> <span id="deg"></span></p>
+        <p><strong>Interpretation:</strong> <span id="inter"></span></p>
+      </div>
     </div>
-  </div>
 
-  <script>
-document.getElementById('dash').innerHTML = sessionStorage.getItem("user") + "'s Test Results Dashboard";
-  </script>
+    <script>
+      document.getElementById("heat").src = "heatmap.png"
+      document.getElementById("dash").innerHTML =
+      sessionStorage.getItem("user") + "'s Test Results Dashboard";
 
-</body>
+      fetch('/get-score', {
+    method: 'GET',
+    credentials: 'include' // To send session cookie
+  })
+    .then(res => res.json())
+    .then(data => {
+      const sc = Number(data.score);
+      document.getElementById("AQ").innerHTML = sc; // optional
+
+      if (sc < 70) {  
+        document.getElementById("deg").innerHTML = "Normal";
+        document.getElementById("inter").innerHTML =
+          "The individual is showing no significant signs of autism spectrum traits. Typical social, communication, and behavioral patterns are expected.";
+      } else if (sc >= 70 && sc <= 106) {
+        document.getElementById("deg").innerHTML = "Mild Autism";
+        document.getElementById("inter").innerHTML =
+          "The individual may exhibit mild traits of autism such as slight difficulty with social interactions or sensory sensitivities, but they can often adapt well in regular environments.";
+      } else if (sc >= 107 && sc <= 153) {
+        document.getElementById("deg").innerHTML = "Moderate Autism";
+        document.getElementById("inter").innerHTML =
+          "The individual is likely to show noticeable challenges in communication, social interaction, and behavior. Support in structured environments may be required.";
+      } else if (sc > 153){
+        document.getElementById("deg").innerHTML = "Severe Autism";
+        document.getElementById("inter").innerHTML =
+          "The individual may face significant challenges in verbal and non-verbal communication, social understanding, and behavior regulation. Ongoing specialized support is typically needed.";
+      }
+    })
+    .catch(err => {
+      console.error("Error fetching score:", err);
+    });
+
+    fetch('/get-prediction', {
+  method: 'GET',
+  credentials: 'include' // important for session
+})
+  .then(res => res.json())
+  .then(data => {
+    const p = "TD";
+    if (p == "TD") {
+      document.getElementById("pred").innerHTML =
+        "The eye gaze pattern reflects typical visual attention and social engagement consistent with neurotypical development.";
+    } else if (p == "ASD") {
+      document.getElementById("pred").innerHTML =
+        "The eye gaze pattern indicates atypical visual attention consistent with traits commonly observed in individuals with Autism Spectrum Disorder (ASD).";
+    } else {
+      document.getElementById("pred").innerHTML = "Prediction not available.";
+    }
+  })
+  .catch(err => {
+    console.error("Error fetching prediction:", err);
+  });
+
+    
+    </script>
+  </body>
 </html>
