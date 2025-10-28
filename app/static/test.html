@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gaze Heatmap Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- GazeCloud API -->
+    <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+
+    <!-- Heatmap.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/heatmap.js/2.0.5/heatmap.min.js"></script>
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+            text-align: center;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        #gaze-status {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        #heatmapContainer {
+            width: 100%;
+            height: 500px;
+            margin-top: 30px;
+            border: 2px dashed #999;
+            background-color: #fff;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Gaze Tracking Heatmap Demo</h1>
+
+    <button onclick="startGazeCloud()">Start Gaze Tracking</button>
+    <button onclick="stopGazeCloud()">Stop & Generate Heatmap</button>
+    <button onclick="saveHeatmapAsImage()">Download Heatmap</button>
+    <button onclick="generateHeatmap()">Test Heatmap</button>
+
+    <div id="gaze-status">Live gaze data will appear here...</div>
+    <div id="heatmapContainer"><!-- Heatmap will render here --></div>
+
+    <script>
+        let gazePoints = [];
+
+        function startGazeCloud() {
+            gazePoints = []; // reset for a new session
+            GazeCloudAPI.UseClickRecalibration = true;
+
+            GazeCloudAPI.OnCalibrationComplete = function () {
+                document.getElementById("gaze-status").innerText = "Calibration complete";
+            };
+
+            GazeCloudAPI.OnCamDenied = function () {
+                document.getElementById("gaze-status").innerText = "Camera access denied";
+            };
+
+            GazeCloudAPI.OnError = function (msg) {
+                document.getElementById("gaze-status").innerText = "Error: " + msg;
+            };
+
+            GazeCloudAPI.OnResult = function (GazeData) {
+                if (GazeData.state === 0) {
+                    const x = GazeData.docX;
+                    const y = GazeData.docY;
+                    gazePoints.push({ x, y });
+                    document.getElementById("gaze-status").innerText =
+                        `Gaze at: (${x.toFixed(0)}, ${y.toFixed(0)})`;
+                } else if (GazeData.state === -1) {
+                    document.getElementById("gaze-status").innerText = "Face tracking lost";
+                } else if (GazeData.state === 1) {
+                    document.getElementById("gaze-status").innerText = "Gaze data uncalibrated";
+                }
+            };
+
+            GazeCloudAPI.StartEyeTracking();
+        }
+
+        function stopGazeCloud() {
+            GazeCloudAPI.StopEyeTracking();
+            document.getElementById("gaze-status").innerText = "Tracking stopped. Generating heatmap...";
+            console.log("Collected gaze points:", gazePoints.length);
+            generateHeatmap();
+        }
+
+        function generateHeatmap() {
+            const heatmapInstance = h337.create({
+                container: document.getElementById('heatmapContainer'),
+                radius: 40,
+                maxOpacity: 0.6,
+                minOpacity: 0.1,
+                blur: 0.75,
+            });
+
+            const heatmapData = {
+                max: 10,
+                data: gazePoints.map(p => ({
+                    x: Math.floor(p.x),
+                    y: Math.floor(p.y),
+                    value: 1
+                }))
+            };
+
+            heatmapInstance.setData(heatmapData);
+        }
+
+        function saveHeatmapAsImage() {
+            const canvas = document.querySelector("#heatmapContainer canvas");
+            if (canvas) {
+                const imgData = canvas.toDataURL("image/png");
+                const link = document.createElement('a');
+                link.href = imgData;
+                link.download = 'gaze_heatmap.png';
+                link.click();
+            } else {
+                alert("No heatmap to save. Please generate it first.");
+            }
+        }
+
+        function generateHeatmap() {
+        const heatmapInstance = h337.create({
+            container: document.getElementById('heatmapContainer'),
+            radius: 40,
+            maxOpacity: 0.6,
+            minOpacity: 0.1,
+            blur: 0.75,
+        });
+
+        const testData = {
+            max: 10,
+            data: [
+                { x: 100, y: 100, value: 5 },
+                { x: 200, y: 150, value: 3 },
+                { x: 300, y: 300, value: 8 }
+            ]
+        };
+
+        heatmapInstance.setData(testData);
+    }
+    </script>
+
+</body>
+</html>

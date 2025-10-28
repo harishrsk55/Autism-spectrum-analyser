@@ -16,7 +16,11 @@
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "framer-motion": "^12.16.0",
+<<<<<<< Updated upstream
     "mongoose": "^8.15.1",
+=======
+    "heatmap.js": "^2.0.5",
+>>>>>>> Stashed changes
     "nodemon": "^3.1.10"
   }
 }

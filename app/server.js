@@ -1,6 +1,10 @@
 const express = require('express')
+<<<<<<< Updated upstream
 const mongoose = require('mongoose');
 const User = require('./models/User');
+=======
+const path = require('path');
+>>>>>>> Stashed changes
 const app = express()
 const fs = require('fs');
 const path = require('path');
@@ -83,6 +87,7 @@ app.post('/submit',async (req,res)=>{
 
 })
 
+<<<<<<< Updated upstream
 app.use(bodyParser.json({ limit: "50mb" })); // to handle large base64 images
 
 app.post("/upload-heatmap", (req, res) => {
@@ -140,6 +145,10 @@ app.get('/get-score', async (req, res) => {
     console.error("Error fetching score:", err);
     res.status(500).json({ message: 'Server error' });
   }
+=======
+app.get('/testie', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'testie.html'));
+>>>>>>> Stashed changes
 });
 
 app.listen(5000,()=>{

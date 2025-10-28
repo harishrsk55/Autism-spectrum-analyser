@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<<<<<<< Updated upstream
   <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -168,3 +169,785 @@
   </script>
 </body>
 </html>
+=======
+    <meta charset="UTF-8">
+    <title>B&W Gaze Heatmap Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- GazeCloud API -->
+    <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+
+    <!-- Heatmap.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/heatmap.js/2.0.5/heatmap.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn-start {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .btn-stop {
+            background: linear-gradient(45deg, #f44336, #da190b);
+            color: white;
+        }
+
+        .btn-download {
+            background: linear-gradient(45deg, #2196F3, #0b7dda);
+            color: white;
+        }
+
+        .btn-test {
+            background: linear-gradient(45deg, #FF9800, #f57c00);
+            color: white;
+        }
+
+        .btn-clear {
+            background: linear-gradient(45deg, #9E9E9E, #757575);
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-panel {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #gaze-status {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        #heatmapContainer {
+            width: 100%;
+            height: 600px;
+            margin: 0 auto;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            background-color: #000;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .instructions {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            margin-bottom: 15px;
+            color: #4CAF50;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .recording-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            display: none;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid #f44336;
+            color: #f44336;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .heatmap-options {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .heatmap-options h3 {
+            margin-bottom: 15px;
+            color: #4CAF50;
+        }
+
+        .option-group {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        .option-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .option-group input, .option-group select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 200px;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👁️ B&W Gaze Tracking Heatmap Generator</h1>
+
+        <div class="heatmap-options">
+            <h3>🎨 Heatmap Style Options</h3>
+            <div class="option-group">
+                <label for="blurRadius">Blur Radius:</label>
+                <input type="range" id="blurRadius" min="10" max="100" value="40">
+                <span id="blurValue">40px</span>
+            </div>
+            <div class="option-group">
+                <label for="intensity">Intensity:</label>
+                <input type="range" id="intensity" min="0.3" max="1.0" step="0.1" value="0.8">
+                <span id="intensityValue">0.8</span>
+            </div>
+            <div class="option-group">
+                <label for="style">Style:</label>
+                <select id="style">
+                    <option value="smooth">Smooth Gaussian</option>
+                    <option value="sharp">Sharp Peaks</option>
+                    <option value="soft">Soft Diffuse</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="startBtn" class="btn-start" onclick="startGazeTracking()">
+                🎯 Start Gaze Tracking
+            </button>
+            <button id="stopBtn" class="btn-stop" onclick="stopGazeTracking()" disabled>
+                ⏹️ Stop & Generate Heatmap
+            </button>
+            <button id="downloadBtn" class="btn-download" onclick="saveHeatmapAsImage()" disabled>
+                💾 Download Heatmap
+            </button>
+            <button class="btn-test" onclick="showTestHeatmap()">
+                🧪 Test Heatmap
+            </button>
+            <button class="btn-clear" onclick="clearHeatmap()">
+                🗑️ Clear
+            </button>
+        </div>
+
+        <div class="status-panel">
+            <div id="gaze-status">Ready to start gaze tracking...</div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="gazeCount">0</div>
+                    <div class="stat-label">Gaze Points</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="sessionTime">0s</div>
+                    <div class="stat-label">Session Time</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="trackingRate">0</div>
+                    <div class="stat-label">Points/sec</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="heatmapContainer">
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 18px;">
+                Black & White heatmap will appear here after tracking
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 How to Use:</h3>
+            <ol>
+                <li><strong>Adjust heatmap style</strong> using the options above (blur, intensity, style)</li>
+                <li><strong>Allow camera access</strong> when prompted - this is required for eye tracking</li>
+                <li><strong>Click "Start Gaze Tracking"</strong> and follow the calibration process</li>
+                <li><strong>Look around the screen naturally</strong> - your gaze points will be collected</li>
+                <li><strong>Click "Stop & Generate Heatmap"</strong> to create your B&W visualization</li>
+                <li><strong>Download your heatmap</strong> as a PNG image if desired</li>
+            </ol>
+            
+            <h3 style="margin-top: 20px;">💡 B&W Heatmap Features:</h3>
+            <ul style="margin-left: 20px;">
+                <li>Black background with white intensity peaks for scientific visualization</li>
+                <li>Adjustable blur radius for different analysis needs</li>
+                <li>Variable intensity settings for better contrast</li>
+                <li>Multiple styles: smooth, sharp, or soft rendering</li>
+                <li>Perfect for research papers and professional presentations</li>
+            </ul>
+        </div>
+
+        <div class="recording-indicator" id="recordingIndicator">
+            🔴 RECORDING GAZE DATA
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+    </div>
+
+    <script>
+        let gazePoints = [];
+        let heatmapInstance = null;
+        let isTracking = false;
+        let startTime = null;
+        let sessionTimer = null;
+        let usesFallback = false;
+
+        // UI Elements
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const gazeStatus = document.getElementById('gaze-status');
+        const gazeCount = document.getElementById('gazeCount');
+        const sessionTime = document.getElementById('sessionTime');
+        const trackingRate = document.getElementById('trackingRate');
+        const recordingIndicator = document.getElementById('recordingIndicator');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Option controls
+        const blurRadius = document.getElementById('blurRadius');
+        const intensity = document.getElementById('intensity');
+        const style = document.getElementById('style');
+        const blurValue = document.getElementById('blurValue');
+        const intensityValue = document.getElementById('intensityValue');
+
+        // Update option displays
+        blurRadius.addEventListener('input', () => {
+            blurValue.textContent = blurRadius.value + 'px';
+            if (heatmapInstance) regenerateHeatmap();
+        });
+
+        intensity.addEventListener('input', () => {
+            intensityValue.textContent = intensity.value;
+            if (heatmapInstance) regenerateHeatmap();
+        });
+
+        style.addEventListener('change', () => {
+            if (heatmapInstance) regenerateHeatmap();
+        });
+
+        // Black & White Heatmap implementation
+        class BWHeatmap {
+            constructor(config) {
+                this.container = config.container;
+                this.radius = config.radius || 40;
+                this.maxOpacity = config.maxOpacity || 0.8;
+                this.blur = config.blur || 0.85;
+                this.style = config.style || 'smooth';
+                this.canvas = document.createElement('canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.canvas.width = this.container.offsetWidth;
+                this.canvas.height = this.container.offsetHeight;
+                this.canvas.style.position = 'absolute';
+                this.canvas.style.top = '0';
+                this.canvas.style.left = '0';
+                this.canvas.style.pointerEvents = 'none';
+                this.container.appendChild(this.canvas);
+                this.data = [];
+                this.max = 1;
+            }
+
+            setData(data) {
+                this.data = data.data || [];
+                this.max = data.max || 1;
+                this.render();
+            }
+
+            updateConfig(config) {
+                this.radius = config.radius || this.radius;
+                this.maxOpacity = config.maxOpacity || this.maxOpacity;
+                this.blur = config.blur || this.blur;
+                this.style = config.style || this.style;
+                this.render();
+            }
+
+            render() {
+                // Clear with black background
+                this.ctx.fillStyle = '#000000';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Create temporary canvas for blending
+                const tempCanvas = document.createElement('canvas');
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCanvas.width = this.canvas.width;
+                tempCanvas.height = this.canvas.height;
+                
+                this.data.forEach(point => {
+                    const intensity = Math.min(point.value / this.max, 1);
+                    
+                    // Adjust radius based on style
+                    let effectiveRadius = this.radius;
+                    if (this.style === 'sharp') {
+                        effectiveRadius = this.radius * 0.7;
+                    } else if (this.style === 'soft') {
+                        effectiveRadius = this.radius * 1.5;
+                    }
+                    
+                    // Create radial gradient for each point
+                    const gradient = tempCtx.createRadialGradient(
+                        point.x, point.y, 0,
+                        point.x, point.y, effectiveRadius
+                    );
+                    
+                    // White gradient with varying opacity
+                    const alpha = this.maxOpacity * intensity;
+                    
+                    if (this.style === 'sharp') {
+                        gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
+                        gradient.addColorStop(0.5, `rgba(255, 255, 255, ${alpha * 0.8})`);
+                        gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+                    } else if (this.style === 'soft') {
+                        gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha * 0.6})`);
+                        gradient.addColorStop(0.3, `rgba(255, 255, 255, ${alpha * 0.4})`);
+                        gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+                    } else { // smooth
+                        gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
+                        gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+                    }
+                    
+                    tempCtx.fillStyle = gradient;
+                    tempCtx.beginPath();
+                    tempCtx.arc(point.x, point.y, effectiveRadius, 0, Math.PI * 2);
+                    tempCtx.fill();
+                });
+                
+                // Apply blur effect if needed
+                if (this.blur > 0 && this.style !== 'sharp') {
+                    tempCtx.filter = `blur(${this.blur * 3}px)`;
+                    tempCtx.drawImage(tempCanvas, 0, 0);
+                    tempCtx.filter = 'none';
+                }
+                
+                // Composite onto main canvas using 'screen' blend mode for additive effect
+                this.ctx.globalCompositeOperation = 'screen';
+                this.ctx.drawImage(tempCanvas, 0, 0);
+                this.ctx.globalCompositeOperation = 'source-over';
+            }
+        }
+
+        // Fallback for both color and B&W
+        function createHeatmapInstance(container, config) {
+            try {
+                if (typeof h337 !== 'undefined') {
+                    usesFallback = false;
+                    // Override h337 with custom B&W gradient
+                    return h337.create({
+                        container: container,
+                        gradient: {
+                            0.0: 'rgba(0,0,0,0)',
+                            0.2: 'rgba(64,64,64,0.3)',
+                            0.4: 'rgba(128,128,128,0.5)',
+                            0.6: 'rgba(192,192,192,0.7)',
+                            0.8: 'rgba(224,224,224,0.8)',
+                            1.0: 'rgba(255,255,255,1)'
+                        },
+                        backgroundColor: 'rgba(0,0,0,1)',
+                        ...config
+                    });
+                } else {
+                    throw new Error('h337 not available');
+                }
+            } catch (error) {
+                console.log('Using custom B&W heatmap implementation');
+                usesFallback = true;
+                return new BWHeatmap({
+                    container: container,
+                    ...config
+                });
+            }
+        }
+
+        function getCurrentConfig() {
+            return {
+                radius: parseInt(blurRadius.value),
+                maxOpacity: parseFloat(intensity.value),
+                blur: 0.85,
+                style: style.value
+            };
+        }
+
+        function regenerateHeatmap() {
+            if (gazePoints.length === 0) return;
+            
+            const config = getCurrentConfig();
+            
+            if (usesFallback && heatmapInstance) {
+                heatmapInstance.updateConfig(config);
+            } else {
+                generateHeatmap();
+            }
+        }
+
+        function startGazeTracking() {
+            hideError();
+            gazePoints = [];
+            isTracking = true;
+            startTime = Date.now();
+            
+            // Update UI
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            downloadBtn.disabled = true;
+            recordingIndicator.style.display = 'block';
+            gazeStatus.innerText = "Initializing camera...";
+            
+            // Start session timer
+            sessionTimer = setInterval(updateStats, 1000);
+
+            // Configure GazeCloud
+            GazeCloudAPI.UseClickRecalibration = true;
+
+            GazeCloudAPI.OnCalibrationComplete = function () {
+                gazeStatus.innerText = "✅ Calibration complete - tracking your gaze!";
+            };
+
+            GazeCloudAPI.OnCamDenied = function () {
+                showError("Camera access denied. Please allow camera access and try again.");
+                stopGazeTracking();
+            };
+
+            GazeCloudAPI.OnError = function (msg) {
+                showError("Tracking error: " + msg);
+                stopGazeTracking();
+            };
+
+            GazeCloudAPI.OnResult = function (GazeData) {
+                if (!isTracking) return;
+
+                if (GazeData.state === 0) {
+                    // Valid gaze data
+                    const containerRect = document.getElementById('heatmapContainer').getBoundingClientRect();
+                    const x = GazeData.docX - containerRect.left;
+                    const y = GazeData.docY - containerRect.top;
+                    
+                    // Only add points within the heatmap container
+                    if (x >= 0 && x <= containerRect.width && y >= 0 && y <= containerRect.height) {
+                        gazePoints.push({ x: Math.round(x), y: Math.round(y) });
+                        gazeStatus.innerText = `👁️ Tracking: (${Math.round(x)}, ${Math.round(y)})`;
+                    }
+                } else if (GazeData.state === -1) {
+                    gazeStatus.innerText = "⚠️ Face tracking lost - please look at the camera";
+                } else if (GazeData.state === 1) {
+                    gazeStatus.innerText = "🔄 Calibrating - please follow instructions";
+                }
+                
+                updateStats();
+            };
+
+            try {
+                GazeCloudAPI.StartEyeTracking();
+            } catch (error) {
+                showError("Failed to start eye tracking: " + error.message);
+                stopGazeTracking();
+            }
+        }
+
+        function stopGazeTracking() {
+            isTracking = false;
+            
+            // Update UI
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            recordingIndicator.style.display = 'none';
+            
+            if (sessionTimer) {
+                clearInterval(sessionTimer);
+                sessionTimer = null;
+            }
+
+            try {
+                GazeCloudAPI.StopEyeTracking();
+            } catch (error) {
+                console.log("Error stopping tracking:", error);
+            }
+
+            if (gazePoints.length > 0) {
+                gazeStatus.innerText = `✅ Tracking stopped. Generated B&W heatmap from ${gazePoints.length} gaze points!`;
+                generateHeatmap();
+                downloadBtn.disabled = false;
+            } else {
+                gazeStatus.innerText = "❌ No gaze data collected. Try again with better lighting.";
+            }
+        }
+
+        function generateHeatmap() {
+            const container = document.getElementById('heatmapContainer');
+            
+            // Clear existing content
+            container.innerHTML = '';
+            
+            if (gazePoints.length === 0) {
+                container.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 18px;">No gaze data to display</div>';
+                return;
+            }
+
+            try {
+                const config = getCurrentConfig();
+                heatmapInstance = createHeatmapInstance(container, config);
+
+                // Process gaze points - combine nearby points for better visualization
+                const processedPoints = processGazePoints(gazePoints);
+                
+                const heatmapData = {
+                    max: Math.max(...processedPoints.map(p => p.value)),
+                    data: processedPoints
+                };
+
+                heatmapInstance.setData(heatmapData);
+                console.log(`Generated B&W heatmap with ${processedPoints.length} processed points`);
+                
+            } catch (error) {
+                showError("Failed to generate heatmap: " + error.message);
+            }
+        }
+
+        function processGazePoints(points) {
+            const gridSize = 15; // Combine points within 15px for B&W precision
+            const grid = {};
+            
+            points.forEach(point => {
+                const gridX = Math.floor(point.x / gridSize) * gridSize;
+                const gridY = Math.floor(point.y / gridSize) * gridSize;
+                const key = `${gridX},${gridY}`;
+                
+                if (!grid[key]) {
+                    grid[key] = { x: gridX + gridSize/2, y: gridY + gridSize/2, value: 0 };
+                }
+                grid[key].value++;
+            });
+            
+            return Object.values(grid);
+        }
+
+        function showTestHeatmap() {
+            const container = document.getElementById('heatmapContainer');
+            container.innerHTML = '';
+            
+            try {
+                const config = getCurrentConfig();
+                heatmapInstance = createHeatmapInstance(container, config);
+
+                const testData = {
+                    max: 15,
+                    data: [
+                        // Central focus point (brightest)
+                        { x: container.offsetWidth * 0.5, y: container.offsetHeight * 0.5, value: 15 },
+                        { x: container.offsetWidth * 0.48, y: container.offsetHeight * 0.52, value: 12 },
+                        { x: container.offsetWidth * 0.52, y: container.offsetHeight * 0.48, value: 14 },
+                        
+                        // Secondary focus areas
+                        { x: container.offsetWidth * 0.3, y: container.offsetHeight * 0.3, value: 10 },
+                        { x: container.offsetWidth * 0.7, y: container.offsetHeight * 0.3, value: 9 },
+                        
+                        // Reading pattern simulation
+                        { x: container.offsetWidth * 0.1, y: container.offsetHeight * 0.2, value: 8 },
+                        { x: container.offsetWidth * 0.3, y: container.offsetHeight * 0.22, value: 7 },
+                        { x: container.offsetWidth * 0.5, y: container.offsetHeight * 0.21, value: 6 },
+                        { x: container.offsetWidth * 0.7, y: container.offsetHeight * 0.23, value: 5 },
+                        { x: container.offsetWidth * 0.9, y: container.offsetHeight * 0.2, value: 4 },
+                        
+                        // Bottom scan areas
+                        { x: container.offsetWidth * 0.2, y: container.offsetHeight * 0.8, value: 7 },
+                        { x: container.offsetWidth * 0.8, y: container.offsetHeight * 0.8, value: 6 },
+                        
+                        // Peripheral glances
+                        { x: container.offsetWidth * 0.1, y: container.offsetHeight * 0.1, value: 3 },
+                        { x: container.offsetWidth * 0.9, y: container.offsetHeight * 0.1, value: 3 },
+                        { x: container.offsetWidth * 0.1, y: container.offsetHeight * 0.9, value: 2 },
+                        { x: container.offsetWidth * 0.9, y: container.offsetHeight * 0.9, value: 2 }
+                    ]
+                };
+
+                heatmapInstance.setData(testData);
+                
+                gazeStatus.innerText = "📊 Test B&W heatmap generated successfully!";
+                downloadBtn.disabled = false;
+                
+            } catch (error) {
+                showError("Failed to generate test heatmap: " + error.message);
+            }
+        }
+
+        function clearHeatmap() {
+            const container = document.getElementById('heatmapContainer');
+            container.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 18px;">Black & White heatmap will appear here after tracking</div>';
+            
+            gazePoints = [];
+            heatmapInstance = null;
+            downloadBtn.disabled = true;
+            gazeStatus.innerText = "Ready to start gaze tracking...";
+            updateStats();
+        }
+
+        function saveHeatmapAsImage() {
+            const canvas = document.querySelector("#heatmapContainer canvas");
+            if (canvas) {
+                try {
+                    const imgData = canvas.toDataURL("image/png");
+                    const link = document.createElement('a');
+                    link.href = imgData;
+                    link.download = `bw_gaze_heatmap_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.png`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    gazeStatus.innerText = "💾 B&W Heatmap saved successfully!";
+                } catch (error) {
+                    showError("Failed to save heatmap: " + error.message);
+                }
+            } else {
+                showError("No heatmap canvas found. Please generate a heatmap first.");
+            }
+        }
+
+        function updateStats() {
+            gazeCount.textContent = gazePoints.length;
+            
+            if (startTime) {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                sessionTime.textContent = elapsed + 's';
+                
+                const rate = elapsed > 0 ? Math.round(gazePoints.length / elapsed) : 0;
+                trackingRate.textContent = rate;
+            }
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            console.error(message);
+        }
+
+        function hideError() {
+            errorMessage.style.display = 'none';
+        }
+
+        // Initialize stats display
+        updateStats();
+    </script>
+</body>
+</html>
+>>>>>>> Stashed changes
