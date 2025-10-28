@@ -28,7 +28,11 @@ function generateHeatmap() {
 
 // Expose the function to the global scope
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 window.generateHeatmap = generateHeatmap;
+=======
+window.generateHeatmap = generateHeatmap;
+>>>>>>> Stashed changes
 =======
 window.generateHeatmap = generateHeatmap;
 >>>>>>> Stashed changes
